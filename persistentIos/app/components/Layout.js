@@ -24,30 +24,49 @@ var Layout = React.createClass({
 
   render: function() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) => <Text>{rowData}</Text>}
-      />
+      <View style={styles.container}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRow}
+        />
+      </View>
     );
+  },
+
+  _renderRow: function(rowData) {
+    return (
+      <View>
+        <View style={styles.row}>
+          <Text style={styles.text}>
+            {rowData}
+          </Text>
+        </View>
+        <View style={styles.separator} />
+      </View>
+    )
   }
 });
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
+  },
+  row: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    padding: 10,
+    backgroundColor: '#F6F6F6',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  separator: {
+    height: 1,
+    backgroundColor: '#CCCCCC',
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  thumb: {
+    width: 64,
+    height: 64,
+  },
+  text: {
+    flex: 1,
   },
 });
 
