@@ -7,19 +7,32 @@ var {
   View,
   ListView,
 } = React;
+var ddpClient = require('../db/lib/ddp-client');
+var Items = require('../db/Items');
 
 var Layout = React.createClass({
   getInitialState: function() {
-    var data = [];
-    var i = 1;
-    while (i< 100) {
-      data.push('row ' + i);
-      i++;
-    }
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: ds.cloneWithRows(data),
+      dataSource: ds.cloneWithRows([]),
     };
+  },
+
+  componentWillMount: function() {
+    var self = this;
+    ddpClient.initialize()
+      .then(function() {
+        return ddpClient.subscribe('items');
+      })
+      .then(function() {
+        self.setState({
+          dataSource: self.state.dataSource.cloneWithRows(Items.find())
+        });
+      });
+  },
+
+  componentWillUnmount: function() {
+    ddpClient.close();
   },
 
   render: function() {
@@ -38,7 +51,7 @@ var Layout = React.createClass({
       <View>
         <View style={styles.row}>
           <Text style={styles.text}>
-            {rowData}
+            {rowData.sentence}
           </Text>
         </View>
         <View style={styles.separator} />

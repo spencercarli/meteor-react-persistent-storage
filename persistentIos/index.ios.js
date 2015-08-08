@@ -9,11 +9,9 @@ var {
   AppRegistry,
 } = React;
 var Layout = require('./app/components/Layout');
-var seed = require('./app/db/seed');
 
 var persistentIos = React.createClass({
   render: function() {
-    console.log(seed);
     return <Layout />;
   }
 });
