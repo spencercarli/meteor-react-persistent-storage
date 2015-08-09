@@ -22,11 +22,17 @@ var Layout = React.createClass({
     var self = this;
     ddpClient.initialize()
       .then(function() {
+        return Items.observe();
+      })
+      .then(function() {
         return ddpClient.subscribe('items');
       })
       .then(function() {
+        return Items.findLocal();
+      })
+      .then(function(res) {
         self.setState({
-          dataSource: self.state.dataSource.cloneWithRows(Items.find())
+          dataSource: self.state.dataSource.cloneWithRows(res)
         });
       });
   },
